@@ -70,11 +70,15 @@ for i, photo in tqdm(
         [255 if mask_sum[i][j] > 382.5 else 0 for j in range(x)] for i in range(y)
     ]
     final_mask = np.array(final_mask, dtype=np.uint8)
-    # kernel = np.ones((10, 10), np.uint8)
-    # final_mask = cv.morphologyEx(final_mask, cv.MORPH_CLOSE, kernel)
+    kernel = np.ones((3, 3), np.uint8)
+    final_mask = cv.morphologyEx(final_mask, cv.MORPH_CLOSE, kernel)
+    final_mask = cv.dilate(final_mask, None, iterations=3)
+    final_mask = cv.erode(final_mask, None, iterations=3)
 
     # cv.imshow("Final", final_mask)
     result = cv.bitwise_and(image, image, mask=final_mask)
     # cv.imshow("Result", result)
+    cv.waitKey(0)
+    cv.destroyAllWindows()
 
     cv.imwrite(write_file_paths[i], final_mask)

@@ -25,7 +25,9 @@ target_file_paths = [
 iou = []
 dice = []
 
-for i, file in tqdm(enumerate(predict_file_paths), total=1000):
+for i, file in tqdm(
+    enumerate(predict_file_paths), total=1000, desc="Calculating metrics"
+):
     target_mask = cv.imread(file, cv.IMREAD_GRAYSCALE)
     _, target_mask = cv.threshold(target_mask, 15, 255, cv.THRESH_BINARY)
     predict_mask = cv.imread(target_file_paths[i], cv.IMREAD_GRAYSCALE)
